@@ -147,4 +147,4 @@ Deploy on Vercel, then:
 
 ## Screenshots
 
-`docs/screenshots/` contains both emails, the confirm, success, already-accepted, decline, declined and invalid pages at 375px and 1280px, plus the admin dashboard. (They show a placeholder ring where the real logo goes.)
+`docs/screenshots/` contains both emails, the confirm, success, already-accepted, decline, declined and invalid pages at 375px and 1280px, plus the admin dashboard.

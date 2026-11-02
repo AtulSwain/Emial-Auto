@@ -4,7 +4,6 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Otakuva · Private early access",
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
-  icons: { icon: "/logo.png" },
 };
 
 export const viewport: Viewport = {

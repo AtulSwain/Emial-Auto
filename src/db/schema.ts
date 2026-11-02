@@ -1,7 +1,12 @@
 import { sql } from "drizzle-orm";
-import { index, integer, pgEnum, pgTable, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
+import { index, integer, pgSchema, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 
-export const inviteStatus = pgEnum("invite_status", [
+// Everything lives in its own Postgres schema so this app can share a database
+// with the main Otakuva site without touching its tables (or being touched by
+// its migrations).
+export const invitesSchema = pgSchema("otakuva_invites");
+
+export const inviteStatus = invitesSchema.enum("invite_status", [
   "pending",
   "accepted",
   "declined",
@@ -11,7 +16,7 @@ export const inviteStatus = pgEnum("invite_status", [
 
 const tz = (name: string) => timestamp(name, { withTimezone: true, mode: "date" });
 
-export const invites = pgTable(
+export const invites = invitesSchema.table(
   "invites",
   {
     id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),

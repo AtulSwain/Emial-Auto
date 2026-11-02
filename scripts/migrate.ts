@@ -17,7 +17,7 @@ const local = /localhost|127\.0\.0\.1/.test(url);
 const pool = new Pool({ connectionString: url, ssl: local ? undefined : { rejectUnauthorized: true } });
 
 try {
-  await migrate(drizzle(pool), { migrationsFolder: "./drizzle" });
+  await migrate(drizzle(pool), { migrationsFolder: "./drizzle", migrationsSchema: "otakuva_invites" });
   console.log("✓ Migrations applied");
 } finally {
   await pool.end();

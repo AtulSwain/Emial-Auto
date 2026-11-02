@@ -7,4 +7,6 @@ export default defineConfig({
   dialect: "postgresql",
   dbCredentials: { url: process.env.DATABASE_URL ?? "" },
   strict: true,
+  schemaFilter: ["otakuva_invites"],
+  migrations: { schema: "otakuva_invites" },
 });

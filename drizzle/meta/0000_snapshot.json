@@ -1,12 +1,12 @@
 {
-  "id": "7c466f74-095f-4e2d-8813-9a949d5e8877",
+  "id": "a89fcf26-b36a-4464-80fb-ed1efa3ef91c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.invites": {
+    "otakuva_invites.invites": {
       "name": "invites",
-      "schema": "",
+      "schema": "otakuva_invites",
       "columns": {
         "id": {
           "name": "id",
@@ -42,7 +42,7 @@
         "status": {
           "name": "status",
           "type": "invite_status",
-          "typeSchema": "public",
+          "typeSchema": "otakuva_invites",
           "primaryKey": false,
           "notNull": true,
           "default": "'pending'"
@@ -196,9 +196,9 @@
     }
   },
   "enums": {
-    "public.invite_status": {
+    "otakuva_invites.invite_status": {
       "name": "invite_status",
-      "schema": "public",
+      "schema": "otakuva_invites",
       "values": [
         "pending",
         "accepted",
@@ -208,7 +208,9 @@
       ]
     }
   },
-  "schemas": {},
+  "schemas": {
+    "otakuva_invites": "otakuva_invites"
+  },
   "sequences": {},
   "roles": {},
   "policies": {},

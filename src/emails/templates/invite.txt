@@ -1,0 +1,28 @@
+PRIVATE INVITATION · 招待状
+
+{{NAME}}, you're first in line.
+
+Before Otakuva opens to anyone else, I wanted it in the hands of creators whose work I genuinely follow. You're one of a small group of anime creators in India I've personally chosen for first access.
+
+Otakuva is a home for discovering anime — browse by genre, country and monthly rankings, explore the Top 100, write reviews and earn reviewer ranks from Kōhai to Densetsu, and join communities built around the shows you love.
+
+----------------------------------------
+
+ACCESS: Full site, every feature
+WINDOW: 3 days, from when you accept
+THE ASK: Your honest feedback
+
+Accept invitation:
+{{ACCEPT_URL}}
+
+Your testing link arrives the moment you accept. Not the right time? Let me know — no hard feelings:
+{{DECLINE_URL}}
+
+Your perspective will directly shape what Otakuva becomes at launch. I'd be honoured to have you on board.
+
+Atul Swain
+Founder, Otakuva
+
+--
+This invitation was sent personally to {{EMAIL}} and is not transferable.
+Otakuva · Mumbai, India

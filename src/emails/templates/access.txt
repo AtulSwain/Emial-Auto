@@ -1,0 +1,34 @@
+ACCESS GRANTED · ようこそ
+
+Welcome in, {{NAME}}.
+
+Thank you for saying yes. Your early access is live, and the whole site is yours to explore before anyone else sees it.
+
+YOUR ACCESS ENDS
+{{ACCESS_ENDS}}
+
+Open Otakuva:
+{{TEST_LINK}}
+
+This link is unique to you — please don't share it.
+
+WHERE TO START
+01  Browse. Monthly rankings, Top 100, genres and countries.
+02  Review. Write about a show you love and start your climb from Kōhai.
+03  Connect. Create or join a community.
+
+----------------------------------------
+
+You may find rough edges — that's exactly why you're here. When your three days are up, I'd love your unfiltered thoughts: what felt great, what felt off, and what's missing.
+{{#FEEDBACK}}
+Share feedback →
+{{FEEDBACK_URL}}
+{{/FEEDBACK}}
+Enjoy it. Just reply to this email if anything breaks — it comes straight to me.
+
+Atul Swain
+Founder, Otakuva
+
+--
+Sent to {{EMAIL}} as part of Otakuva's private early access.
+Otakuva · Mumbai, India

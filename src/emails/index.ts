@@ -12,7 +12,7 @@ export const GUIDE_PATH = "/otakuva-tester-guide.pdf";
 
 let guidePdf: Buffer | undefined;
 
-/** The tester guide PDF, attached to every invite. */
+/** The tester guide PDF as an email attachment (not attached by default: attachments from new senders raise spam scores). */
 export function guideAttachment() {
   guidePdf ??= readFileSync(path.join(process.cwd(), "public", "otakuva-tester-guide.pdf"));
   return { filename: "Otakuva-Tester-Guide.pdf", content: guidePdf, contentType: "application/pdf" };

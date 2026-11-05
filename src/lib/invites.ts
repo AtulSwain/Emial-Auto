@@ -1,7 +1,7 @@
 import { and, count, desc, eq, gt, lte, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { invites, type Invite, type InviteStatus } from "@/db/schema";
-import { guideAttachment, renderAccessEmail, renderInviteEmail, inviteUrls } from "@/emails";
+import { renderAccessEmail, renderInviteEmail, inviteUrls } from "@/emails";
 import { addDays, formatLongDate } from "./dates";
 import { errorMessage, sendEmail } from "./email";
 import { env } from "./env";
@@ -69,7 +69,6 @@ async function sendInviteEmailFor(invite: Invite, token: string): Promise<SendOu
       subject: email.subject,
       html: email.html,
       text: email.text,
-      attachments: [guideAttachment()],
     });
     const [row] = await db()
       .update(invites)

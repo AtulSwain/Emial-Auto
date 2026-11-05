@@ -79,6 +79,29 @@ export function AccessPanel({ date, children }: { date: string; children?: React
   );
 }
 
+export type Option = { num: string; title: string; body: string; cta: string; href: string; download?: boolean; primary?: boolean };
+
+/** Two side-by-side choices (stacked on phones). */
+export function Options({ items }: { items: Option[] }) {
+  return (
+    <div className={s.options}>
+      {items.map((o) => (
+        <a
+          key={o.num}
+          className={`${s.option} ${o.primary ? s.optionPrimary : ""}`}
+          href={o.href}
+          {...(o.download ? { download: true } : { target: "_blank", rel: "noopener noreferrer" })}
+        >
+          <span className={s.optionNum}>{o.num}</span>
+          <span className={s.optionTitle}>{o.title}</span>
+          <span className={s.optionBody}>{o.body}</span>
+          <span className={s.optionCta}>{o.cta}</span>
+        </a>
+      ))}
+    </div>
+  );
+}
+
 export function Note({ children }: { children: ReactNode }) {
   return <p className={s.note}>{children}</p>;
 }

@@ -1,6 +1,6 @@
 # Otakuva Creator Invites
 
-A private invite system for Otakuva's pre-launch creator test. Type a creator's name and email in `/admin`, click **Send invite**, and they get a personal invitation. When they click **Accept** and confirm, they get a second email with their testing link right away, valid for 3 days.
+A private invite system for Otakuva's pre-launch creator test. Type a creator's name and email in `/admin`, click **Send invite**, and they get a personal invitation. When they click **Accept** and confirm, they get a second email with their testing link right away, valid for 7 days (`ACCESS_DAYS`). After accepting they see two options: download the PDF tester guide, or open Otakuva.
 
 Stack: Next.js 15 (App Router) · TypeScript · Neon Postgres + Drizzle · Resend (or Gmail SMTP) · Zod · Vitest. Deploys on Vercel.
 
@@ -14,8 +14,8 @@ Stack: Next.js 15 (App Router) · TypeScript · Neon Postgres + Drizzle · Resen
 |---|---|
 | `/admin` → Send invite | Row created with a fresh token (only its SHA-256 hash is stored), invitation email sent. |
 | Creator clicks **Accept invitation** | `GET /i/{token}` shows a confirm page. **A GET never accepts**, so Gmail/Outlook link scanners can't accept for them. |
-| Creator clicks **Yes, send my access link** | `POST /i/{token}/accept` sets `accepted`, `access_expires_at = now + ACCESS_DAYS`, sends the access email, pings you. |
-| Accept clicked twice | Idempotent: the 3-day window is never reset. The page offers "Resend my access email" (max 3). |
+| Creator clicks **I accept, let me in** | `POST /i/{token}/accept` sets `accepted`, `access_expires_at = now + ACCESS_DAYS`, sends the access email, pings you. |
+| Accept clicked twice | Idempotent: the access window is never reset. The page offers "Resend my access email" (max 3). |
 | **Not right now** | `/i/{token}/decline` confirm page → POST sets `declined` and pings you. |
 | Daily cron | `/api/cron/expire` marks unaccepted invites past `INVITE_VALID_DAYS` as `expired`. |
 
@@ -96,7 +96,7 @@ Set these in **Vercel → Project → Settings → Environment Variables** (and 
 | `ADMIN_NOTIFY_EMAIL` | ✓ | Gets a ping on every accept / decline. |
 | `DEFAULT_TEST_LINK` | ✓ | https testing link used when an invite has none. |
 | `FEEDBACK_URL` | | Google Form / Tally link. If empty, the "Share feedback →" line is hidden. |
-| `ACCESS_DAYS` | | Testing window, default `3`. |
+| `ACCESS_DAYS` | | Testing window in days, default `7`. All email and page copy follows it. |
 | `INVITE_VALID_DAYS` | | How long an unaccepted invite stays valid, default `14`. |
 | `TIMEZONE` | | Time zone for every date shown, default `Asia/Kolkata`. |
 
@@ -134,6 +134,16 @@ Deploy on Vercel, then:
 - `/i/*` POSTs are rate-limited per IP (in-memory, per instance).
 - Public pages send `noindex` (meta + `X-Robots-Tag`).
 - Logs contain only masked recipients and provider message ids, never bodies, links or keys.
+
+## Tester guide (PDF)
+
+The guide creators download after accepting lives at `public/otakuva-tester-guide.pdf`. Edit `guide/tester-guide.html`, then rebuild it with:
+
+```bash
+node scripts/build-guide.cjs
+```
+
+(It uses Playwright's Chromium to print the HTML to an A4 PDF.)
 
 ## Scripts
 

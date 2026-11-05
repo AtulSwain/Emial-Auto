@@ -17,9 +17,12 @@ WHERE TO START
 02  Review. Write about a show you love and start your climb from Kōhai.
 03  Connect. Create or join a community.
 
+New here? The tester guide walks you through signing in step by step:
+{{GUIDE_URL}}
+
 ----------------------------------------
 
-You may find rough edges — that's exactly why you're here. When your three days are up, I'd love your unfiltered thoughts: what felt great, what felt off, and what's missing.
+You may find rough edges — that's exactly why you're here. When your {{WINDOW}} are up, I'd love your unfiltered thoughts: what felt great, what felt off, and what's missing.
 {{#FEEDBACK}}
 Share feedback →
 {{FEEDBACK_URL}}

@@ -51,7 +51,7 @@ const schema = z
       .optional()
       .transform((v) => (v ? v : undefined))
       .pipe(httpsUrl.optional()),
-    ACCESS_DAYS: z.coerce.number().int().min(1).max(60).default(3),
+    ACCESS_DAYS: z.coerce.number().int().min(1).max(60).default(7),
     INVITE_VALID_DAYS: z.coerce.number().int().min(1).max(365).default(14),
     TIMEZONE: z
       .string()

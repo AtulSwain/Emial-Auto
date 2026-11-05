@@ -62,7 +62,7 @@ export type SendOutcome = { invite: Invite; sent: boolean; error?: string };
 
 async function sendInviteEmailFor(invite: Invite, token: string): Promise<SendOutcome> {
   const e = env();
-  const email = renderInviteEmail({ appUrl: e.APP_URL, name: invite.name, email: invite.email, token });
+  const email = renderInviteEmail({ appUrl: e.APP_URL, name: invite.name, email: invite.email, token, accessDays: e.ACCESS_DAYS });
   try {
     const { id } = await sendEmail({ to: invite.email, subject: email.subject, html: email.html, text: email.text });
     const [row] = await db()
@@ -90,6 +90,7 @@ export async function sendAccessEmailFor(invite: Invite): Promise<SendOutcome> {
     testLink: testLinkFor(invite),
     accessExpiresAt: invite.accessExpiresAt,
     timeZone: e.TIMEZONE,
+    accessDays: e.ACCESS_DAYS,
     feedbackUrl: e.FEEDBACK_URL,
   });
   try {
@@ -227,7 +228,7 @@ export async function acceptInvite(token: string, now = new Date()): Promise<Acc
 
   // Guarded update inside a transaction: only a still-pending, unexpired row flips.
   // A double-click or concurrent POST finds nothing to update and falls through
-  // to the idempotent "already accepted" path, so the 3-day window never resets.
+  // to the idempotent "already accepted" path, so the access window never resets.
   const updated = await db().transaction(async (tx) => {
     const [row] = await tx
       .update(invites)

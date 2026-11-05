@@ -9,7 +9,7 @@ Otakuva is a home for discovering anime — browse by genre, country and monthly
 ----------------------------------------
 
 ACCESS: Full site, every feature
-WINDOW: 3 days, from when you accept
+WINDOW: {{WINDOW}}, from when you accept
 THE ASK: Your honest feedback
 
 Accept invitation:

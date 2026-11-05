@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { renderAccessEmail, renderInviteEmail } from "@/emails";
 import { escapeHtml, renderTemplate } from "@/emails/render";
 
-const base = { appUrl: "https://invites.otakuva.example", name: "Riya", email: "riya@example.com" };
+const base = { appUrl: "https://invites.otakuva.example", name: "Riya", email: "riya@example.com", accessDays: 7 };
 const token = "A".repeat(43);
 
 describe("renderTemplate", () => {
@@ -50,6 +50,8 @@ describe("invite email", () => {
     expect(m.html).toContain('<meta name="color-scheme" content="dark">');
     expect(m.html).toContain("PRIVATE INVITATION &middot; 招待状");
     expect(m.html).toContain("This invitation was sent personally to riya@example.com and is not transferable.");
+    expect(m.html).toContain(">7 days, from when you accept<");
+    expect(m.text).toContain("WINDOW: 7 days, from when you accept");
   });
 
   it("plain text has the raw URLs", () => {
@@ -88,6 +90,10 @@ describe("access email", () => {
     expect(m.html).toContain("Thursday, 5 November 2026");
     expect(m.html).toContain('href="https://otakuva.vercel.app/?ref=riya&amp;x=1"');
     expect(m.html).toContain("Share feedback &rarr;");
+    expect(m.html).toContain("Your 7-day early access to Otakuva starts now.");
+    expect(m.html).toContain("When your 7 days are up");
+    expect(m.html).toContain('href="https://invites.otakuva.example/otakuva-tester-guide.pdf"');
+    expect(m.text).toContain("https://invites.otakuva.example/otakuva-tester-guide.pdf");
     expect(m.html).toContain('href="https://tally.so/r/abc"');
     expect(m.html).not.toMatch(/\{\{|\}\}/);
     expect(m.text).toContain("https://otakuva.vercel.app/?ref=riya&x=1");

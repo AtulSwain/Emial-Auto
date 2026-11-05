@@ -16,13 +16,14 @@ const dry = process.argv.includes("--dry");
 const e = loadEnv();
 const sample = { name: "Riya", email: "riya@example.com" };
 
-const invite = renderInviteEmail({ appUrl: e.APP_URL, ...sample, token: generateToken() });
+const invite = renderInviteEmail({ appUrl: e.APP_URL, ...sample, token: generateToken(), accessDays: e.ACCESS_DAYS });
 const access = renderAccessEmail({
   appUrl: e.APP_URL,
   ...sample,
   testLink: e.DEFAULT_TEST_LINK,
   accessExpiresAt: addDays(new Date(), e.ACCESS_DAYS),
   timeZone: e.TIMEZONE,
+  accessDays: e.ACCESS_DAYS,
   feedbackUrl: e.FEEDBACK_URL,
 });
 

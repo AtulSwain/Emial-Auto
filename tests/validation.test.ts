@@ -62,7 +62,7 @@ describe("env", () => {
   it("parses defaults and strips the trailing slash", () => {
     const e = loadEnv(good);
     expect(e.APP_URL).toBe("https://invites.otakuva.example");
-    expect(e.ACCESS_DAYS).toBe(3);
+    expect(e.ACCESS_DAYS).toBe(7);
     expect(e.INVITE_VALID_DAYS).toBe(14);
     expect(e.TIMEZONE).toBe("Asia/Kolkata");
     expect(e.FEEDBACK_URL).toBeUndefined();

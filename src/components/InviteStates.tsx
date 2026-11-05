@@ -3,6 +3,7 @@ import { formatLongDate } from "@/lib/dates";
 import { env } from "@/lib/env";
 import { canCreatorResendAccess } from "@/lib/invite-state";
 import { testLinkFor } from "@/lib/invites";
+import { GUIDE_PATH, windowText } from "@/emails";
 import {
   AccessPanel,
   Actions,
@@ -11,6 +12,7 @@ import {
   Headline,
   LinkButton,
   Note,
+  Options,
   Pill,
   PostButton,
   SecondaryLink,
@@ -20,16 +22,21 @@ import {
 } from "./Public";
 
 export function ConfirmState({ invite, token }: { invite: Invite; token: string }) {
+  const days = windowText(env().ACCESS_DAYS);
   return (
     <Shell>
-      <Pill>PRIVATE INVITATION · 招待状</Pill>
-      <Headline>Hi {invite.name}, ready to start your 3-day early access?</Headline>
+      <Pill>EARLY ACCESS · アーリーバード</Pill>
+      <Headline>Welcome to Otakuva early access, {invite.name}.</Headline>
       <Body>
-        The moment you confirm, I&apos;ll send your personal testing link to <strong>{invite.email}</strong>. Your three
-        days start then, so pick a time when you can really dig in.
+        You&apos;re one of our early birds: the first creators to step inside Otakuva before the world does. For{" "}
+        <strong>{days}</strong>, the whole site is yours to explore, push and shape.
+      </Body>
+      <Body>
+        Accept below and you&apos;ll get your tester guide and your personal Otakuva link right away. A copy also goes to{" "}
+        <strong>{invite.email}</strong>.
       </Body>
       <Actions>
-        <PostButton action={`/i/${token}/accept`} label="Yes, send my access link" />
+        <PostButton action={`/i/${token}/accept`} label="I accept, let me in" />
         <SecondaryLink href={`/i/${token}/decline`}>Not right now</SecondaryLink>
       </Actions>
       <Signature />
@@ -43,8 +50,8 @@ function ResendBlock({ invite, token, flash }: { invite: Invite; token: string; 
   return (
     <>
       {flash === "sent" && <Flash>Done — I&apos;ve sent it again. Check your inbox (and Promotions or Spam, just in case).</Flash>}
-      {flash === "failed" && <Flash>That didn&apos;t go through. Use the button above, or reply to my invite and I&apos;ll sort it.</Flash>}
-      {flash === "limit" && <Flash>I&apos;ve resent it a few times already. Use the button above, or reply to my invite and I&apos;ll help.</Flash>}
+      {flash === "failed" && <Flash>That didn&apos;t go through. Use the buttons above, or reply to my invite and I&apos;ll sort it.</Flash>}
+      {flash === "limit" && <Flash>I&apos;ve resent it a few times already. Use the buttons above, or reply to my invite and I&apos;ll help.</Flash>}
       {canCreatorResendAccess(invite) && flash !== "limit" && (
         <Actions>
           <SecondaryPost action={`/i/${token}/resend`} label="Resend my access email" />
@@ -54,31 +61,59 @@ function ResendBlock({ invite, token, flash }: { invite: Invite; token: string; 
   );
 }
 
+/** The two things a tester needs: the guide and the site. */
+function StartOptions({ invite }: { invite: Invite }) {
+  return (
+    <Options
+      items={[
+        {
+          num: "01",
+          title: "Tester guide",
+          body: "Step-by-step: signing in with Google, your one-time code, setting a password, and what to try first.",
+          cta: "Download PDF ↓",
+          href: GUIDE_PATH,
+          download: true,
+        },
+        {
+          num: "02",
+          title: "Open Otakuva",
+          body: "Go straight to the Otakuva welcome page and start exploring.",
+          cta: "Open Otakuva →",
+          href: testLinkFor(invite),
+          primary: true,
+        },
+      ]}
+    />
+  );
+}
+
+function AccessEnds({ invite }: { invite: Invite }) {
+  return (
+    <AccessPanel date={formatLongDate(invite.accessExpiresAt!, env().TIMEZONE)}>
+      <Note>Your Otakuva link is unique to you — please don&apos;t share it.</Note>
+    </AccessPanel>
+  );
+}
+
 /** Shown straight after accepting. */
 export function WelcomeState({ invite, token, flash }: { invite: Invite; token: string; flash: ResendFlash }) {
-  const e = env();
   const emailOk = invite.accessSendCount > 0;
   return (
     <Shell>
       <Pill>ACCESS GRANTED · ようこそ</Pill>
       <Headline>You&apos;re in, {invite.name}.</Headline>
-      {emailOk ? (
-        <Body>
-          Your access link is on its way to <strong>{invite.email}</strong>. If it&apos;s taking a moment, you can jump
-          straight in from here.
-        </Body>
-      ) : (
-        <Body>
-          Your access is live. The email to <strong>{invite.email}</strong> is taking longer than usual, so here&apos;s
-          your link right away.
-        </Body>
-      )}
-      <AccessPanel date={formatLongDate(invite.accessExpiresAt!, e.TIMEZONE)}>
-        <Actions>
-          <LinkButton href={testLinkFor(invite)}>Open Otakuva</LinkButton>
-        </Actions>
-        <Note>This link is unique to you — please don&apos;t share it.</Note>
-      </AccessPanel>
+      <Body>
+        Welcome, early bird. Start with the tester guide if it&apos;s your first time, or jump straight into Otakuva.{" "}
+        {emailOk ? (
+          <>
+            Both are also on their way to <strong>{invite.email}</strong>.
+          </>
+        ) : (
+          <>The email to {invite.email} is taking a little longer, so everything you need is right here.</>
+        )}
+      </Body>
+      <StartOptions invite={invite} />
+      <AccessEnds invite={invite} />
       <ResendBlock invite={invite} token={token} flash={flash} />
       <Signature />
     </Shell>
@@ -87,22 +122,16 @@ export function WelcomeState({ invite, token, flash }: { invite: Invite; token: 
 
 /** Visiting the invite link again after accepting. */
 export function AlreadyAcceptedState({ invite, token, flash }: { invite: Invite; token: string; flash: ResendFlash }) {
-  const e = env();
-  const date = formatLongDate(invite.accessExpiresAt!, e.TIMEZONE);
+  const date = formatLongDate(invite.accessExpiresAt!, env().TIMEZONE);
   return (
     <Shell>
       <Pill>ACCESS GRANTED · ようこそ</Pill>
-      <Headline>You&apos;re already in, {invite.name}.</Headline>
+      <Headline>Welcome back, {invite.name}.</Headline>
       <Body>
-        Your early access is live until <strong>{date}</strong>. Your link is right here, and I can resend the email if
-        you need it.
+        Your early access is live until <strong>{date}</strong>. Your tester guide and Otakuva link are right here.
       </Body>
-      <AccessPanel date={date}>
-        <Actions>
-          <LinkButton href={testLinkFor(invite)}>Open Otakuva</LinkButton>
-        </Actions>
-        <Note>This link is unique to you — please don&apos;t share it.</Note>
-      </AccessPanel>
+      <StartOptions invite={invite} />
+      <AccessEnds invite={invite} />
       <ResendBlock invite={invite} token={token} flash={flash} />
       <Signature />
     </Shell>
@@ -116,8 +145,8 @@ export function AccessEndedState({ invite }: { invite: Invite }) {
       <Pill>EARLY ACCESS · ありがとう</Pill>
       <Headline>Thank you, {invite.name}.</Headline>
       <Body>
-        Your three days of early access have ended. I&apos;d love your unfiltered thoughts: what felt great, what felt
-        off, and what&apos;s missing.
+        Your {windowText(env().ACCESS_DAYS)} of early access have ended. I&apos;d love your unfiltered thoughts: what felt
+        great, what felt off, and what&apos;s missing.
       </Body>
       {feedback ? (
         <Actions>

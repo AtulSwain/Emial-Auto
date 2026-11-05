@@ -24,6 +24,7 @@ export async function POST(req: NextRequest) {
     appUrl: env().APP_URL,
     name: parsed.data.name,
     email: parsed.data.email,
+    accessDays: env().ACCESS_DAYS,
     token: "PREVIEW-not-a-real-token-xxxxxxxxxxxxxxxxx",
   });
   return new NextResponse(email.html, {

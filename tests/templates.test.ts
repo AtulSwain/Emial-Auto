@@ -90,7 +90,7 @@ describe("access email", () => {
     expect(m.html).toContain("Thursday, 5 November 2026");
     expect(m.html).toContain('href="https://otakuva.vercel.app/?ref=riya&amp;x=1"');
     expect(m.html).toContain("Share feedback &rarr;");
-    expect(m.html).toContain("Your 7-day early access to Otakuva starts now.");
+    expect(m.html).toContain("Your 7-day pre-launch access to Otakuva starts now.");
     expect(m.html).toContain("When your 7 days are up");
     expect(m.html).toContain('href="https://invites.otakuva.example/otakuva-tester-guide.pdf"');
     expect(m.text).toContain("https://invites.otakuva.example/otakuva-tester-guide.pdf");

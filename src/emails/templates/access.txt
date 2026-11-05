@@ -2,7 +2,7 @@ ACCESS GRANTED · ようこそ
 
 Welcome in, {{NAME}}.
 
-Thank you for saying yes. Your early access is live, and the whole site is yours to explore before anyone else sees it.
+Thank you for saying yes. Your pre-launch access is live, and the whole site is yours to explore before anyone else sees it.
 
 YOUR ACCESS ENDS
 {{ACCESS_ENDS}}
@@ -33,5 +33,5 @@ Atul Swain
 Founder, Otakuva
 
 --
-Sent to {{EMAIL}} as part of Otakuva's private early access.
+Sent to {{EMAIL}} as part of Otakuva's private pre-launch access.
 Otakuva · Mumbai, India

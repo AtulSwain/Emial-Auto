@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { formatLongDate } from "@/lib/dates";
 import { loadTemplate, renderTemplate } from "./render";
 
@@ -7,6 +9,14 @@ export function windowText(days: number): string {
 }
 
 export const GUIDE_PATH = "/otakuva-tester-guide.pdf";
+
+let guidePdf: Buffer | undefined;
+
+/** The tester guide PDF, attached to every invite. */
+export function guideAttachment() {
+  guidePdf ??= readFileSync(path.join(process.cwd(), "public", "otakuva-tester-guide.pdf"));
+  return { filename: "Otakuva-Tester-Guide.pdf", content: guidePdf, contentType: "application/pdf" };
+}
 
 export type RenderedEmail = { subject: string; html: string; text: string };
 
@@ -65,7 +75,7 @@ export function renderAccessEmail(input: AccessEmailInput): RenderedEmail {
   const subject = `Your Otakuva access is open, ${input.name}`;
   const values = {
     SUBJECT: subject,
-    PREHEADER: `Welcome in, ${input.name}. Your ${input.accessDays}-day early access to Otakuva starts now.`,
+    PREHEADER: `Welcome in, ${input.name}. Your ${input.accessDays}-day pre-launch access to Otakuva starts now.`,
     APP_URL: input.appUrl,
     NAME: input.name,
     EMAIL: input.email,

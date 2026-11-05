@@ -7,11 +7,14 @@ export type OutgoingEmail = {
   text: string;
   /** Defaults to EMAIL_REPLY_TO. */
   replyTo?: string;
+  attachments?: Attachment[];
 };
+
+export type Attachment = { filename: string; content: Buffer; contentType: string };
 
 export type SendResult = { id: string };
 
-type Provider = (msg: Required<Pick<OutgoingEmail, "to" | "subject" | "text" | "replyTo">> & { html?: string; from: string }) => Promise<SendResult>;
+type Provider = (msg: Required<Pick<OutgoingEmail, "to" | "subject" | "text" | "replyTo">> & { html?: string; from: string; attachments?: Attachment[] }) => Promise<SendResult>;
 
 let resendClient: import("resend").Resend | undefined;
 let gmailTransport: import("nodemailer").Transporter | undefined;
@@ -28,6 +31,7 @@ const resendProvider: Provider = async (msg) => {
     html: msg.html,
     text: msg.text,
     replyTo: msg.replyTo,
+    attachments: msg.attachments?.map((a) => ({ filename: a.filename, content: a.content, contentType: a.contentType })),
   });
   if (error || !data) throw new Error(`Resend: ${error?.message ?? "no message id returned"}`);
   return { id: data.id };
@@ -50,6 +54,7 @@ const gmailProvider: Provider = async (msg) => {
     html: msg.html,
     text: msg.text,
     replyTo: msg.replyTo,
+    attachments: msg.attachments?.map((a) => ({ filename: a.filename, content: a.content, contentType: a.contentType })),
   });
   return { id: info.messageId };
 };
@@ -68,6 +73,7 @@ const outboxProvider: Provider = async (msg) => {
   await writeFile(`.outbox/${id}.json`, JSON.stringify({ from: msg.from, to: msg.to, replyTo: msg.replyTo, subject: msg.subject }, null, 2));
   await writeFile(`.outbox/${id}.txt`, msg.text);
   if (msg.html) await writeFile(`.outbox/${id}.html`, msg.html);
+  for (const a of msg.attachments ?? []) await writeFile(`.outbox/${id}__${a.filename}`, a.content);
   return { id: `outbox:${id}` };
 };
 
@@ -92,6 +98,7 @@ export async function sendEmail(msg: OutgoingEmail): Promise<SendResult> {
       html: msg.html,
       text: msg.text,
       replyTo: msg.replyTo ?? e.EMAIL_REPLY_TO,
+      attachments: msg.attachments,
     });
     console.info(`[email] sent via ${e.EMAIL_PROVIDER} to ${maskEmail(msg.to)} id=${result.id}`);
     return result;

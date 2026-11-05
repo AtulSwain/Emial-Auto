@@ -25,18 +25,18 @@ export function ConfirmState({ invite, token }: { invite: Invite; token: string 
   const days = windowText(env().ACCESS_DAYS);
   return (
     <Shell>
-      <Pill>EARLY ACCESS · アーリーバード</Pill>
-      <Headline>Welcome to Otakuva early access, {invite.name}.</Headline>
+      <Pill>PRE-LAUNCH ACCESS · 先行公開</Pill>
+      <Headline>Welcome to Otakuva pre-launch access, {invite.name}.</Headline>
       <Body>
-        You&apos;re one of our early birds: the first creators to step inside Otakuva before the world does. For{" "}
+        You&apos;re one of the first creators to step inside Otakuva before the world does. For{" "}
         <strong>{days}</strong>, the whole site is yours to explore, push and shape.
       </Body>
       <Body>
-        Accept below and you&apos;ll get your tester guide and your personal Otakuva link right away. A copy also goes to{" "}
+        Agree below and you&apos;ll get your tester guide and your personal Otakuva link right away. A copy also goes to{" "}
         <strong>{invite.email}</strong>.
       </Body>
       <Actions>
-        <PostButton action={`/i/${token}/accept`} label="I accept, let me in" />
+        <PostButton action={`/i/${token}/accept`} label="I agree" />
         <SecondaryLink href={`/i/${token}/decline`}>Not right now</SecondaryLink>
       </Actions>
       <Signature />
@@ -76,9 +76,9 @@ function StartOptions({ invite }: { invite: Invite }) {
         },
         {
           num: "02",
-          title: "Open Otakuva",
+          title: "Go to Otakuva",
           body: "Go straight to the Otakuva welcome page and start exploring.",
-          cta: "Open Otakuva →",
+          cta: "Go to Otakuva →",
           href: testLinkFor(invite),
           primary: true,
         },
@@ -103,7 +103,7 @@ export function WelcomeState({ invite, token, flash }: { invite: Invite; token: 
       <Pill>ACCESS GRANTED · ようこそ</Pill>
       <Headline>You&apos;re in, {invite.name}.</Headline>
       <Body>
-        Welcome, early bird. Start with the tester guide if it&apos;s your first time, or jump straight into Otakuva.{" "}
+        Welcome to pre-launch access. Start with the tester guide if it&apos;s your first time, or jump straight into Otakuva.{" "}
         {emailOk ? (
           <>
             Both are also on their way to <strong>{invite.email}</strong>.
@@ -128,7 +128,7 @@ export function AlreadyAcceptedState({ invite, token, flash }: { invite: Invite;
       <Pill>ACCESS GRANTED · ようこそ</Pill>
       <Headline>Welcome back, {invite.name}.</Headline>
       <Body>
-        Your early access is live until <strong>{date}</strong>. Your tester guide and Otakuva link are right here.
+        Your pre-launch access is live until <strong>{date}</strong>. Your tester guide and Otakuva link are right here.
       </Body>
       <StartOptions invite={invite} />
       <AccessEnds invite={invite} />
@@ -142,10 +142,10 @@ export function AccessEndedState({ invite }: { invite: Invite }) {
   const feedback = env().FEEDBACK_URL;
   return (
     <Shell>
-      <Pill>EARLY ACCESS · ありがとう</Pill>
+      <Pill>PRE-LAUNCH ACCESS · ありがとう</Pill>
       <Headline>Thank you, {invite.name}.</Headline>
       <Body>
-        Your {windowText(env().ACCESS_DAYS)} of early access have ended. I&apos;d love your unfiltered thoughts: what felt
+        Your {windowText(env().ACCESS_DAYS)} of pre-launch access have ended. I&apos;d love your unfiltered thoughts: what felt
         great, what felt off, and what&apos;s missing.
       </Body>
       {feedback ? (

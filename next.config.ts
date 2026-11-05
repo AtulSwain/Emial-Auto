@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   // Email templates are plain HTML/text files read from disk at runtime.
   // Make sure Vercel bundles them with every server function.
   outputFileTracingIncludes: {
-    "/**": ["./src/emails/templates/**"],
+    "/**": ["./src/emails/templates/**", "./public/otakuva-tester-guide.pdf"],
   },
   serverExternalPackages: ["pg", "nodemailer"],
   poweredByHeader: false,

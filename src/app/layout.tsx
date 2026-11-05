@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Otakuva · Private early access",
+  title: "Otakuva · Private pre-launch access",
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
 };
 
